@@ -17,9 +17,11 @@ A LangGraph + FastAPI-based agentic system that automates IT troubleshooting tas
 
 ---
 
-## 📈 Fine-Tuning Workflow
+## 📈 Project Architecture
 
-<img src="" alt="Workflow Diagram" width="300"/>
+<img src="Project_Architecture.png" alt="Architecture Image" width="300"/>
+
+---
 
 ## 🗂️ Folder Structure
 
