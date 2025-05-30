@@ -1,3 +1,3 @@
-Remove-Item -Path "$env:TEMP\*" -Force
-Remove-Item -Path "C:\Windows\Temp\*" -Force
-Remove-Item -Path "C:\inetpub\logs\LogFiles\*" -Force
+Remove-Item -Path "C:\Windows\Temp\*" -Force -Recurse
+Remove-Item -Path "C:\Users\username\AppData\Local\Temp\*" -Force -Recurse
+Clear-EventLog -LogName *
