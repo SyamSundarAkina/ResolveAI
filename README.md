@@ -1,103 +1,157 @@
-# AI AutoPilot Agent Project
 
-An agentic AI system built using FastAPI, LangGraph, DSPy, and OpenAI to process IT service requests end-to-end. The system uses a multi-agent architecture to handle task understanding, diagnostics, automation, and communication.
+# 🤖 AI Autopilot Agentic System
 
----
-
-## 📊 Features
-
-* **Multi-Agent Workflow**: Specialized agents like `CoordinatorAgent`, `DiagnosticAgent`, `AutomationAgent`, and `WriterAgent`.
-* **LangGraph Integration**: For visual workflow execution and coordination.
-* **DSPy Context Routing**: Efficient context pruning and routing with DSPy/MCP.
-* **FastAPI Backend**: RESTful APIs for submitting tasks and querying task status.
-* **Persistent Task Storage**: Integrated with SQLite/Postgres to store task history.
-* **Approval Flow**: Tasks requiring approval are routed appropriately.
-* **OpenAI LLM**: Handles language understanding, code generation, and summarization.
+A LangGraph + FastAPI-based agentic system that automates IT troubleshooting tasks using multiple specialized agents. It handles request intake, diagnoses issues, executes remediation scripts, and optionally drafts email reports.
 
 ---
 
-## 🚀 How to Run
+## 🚀 Features
 
-1. Clone the repo
+- 🔁 **Coordinator Agent**: Orchestrates the flow across agents  
+- 🧠 **Diagnostic Agent**: Uses LLM to analyze issue descriptions  
+- 🤖 **Automation Agent**: Generates platform-specific remediation scripts  
+- ✍️ **Writer Agent**: Drafts executive summary emails for results  
+- 🔐 **Approval Flow**: Optional human-in-the-loop before actions  
+- 🛠️ **Retry Logic**: Automatically retries failed agent calls  
+- ✅ **Test Coverage**: Multiple Pytest scenarios for all endpoints
 
-```bash
-git clone https://github.com/SyamSundarAkina/AI_AutoPilot_Projects.git
-cd AI_AutoPilot_Agent
+---
+
+## 🗂️ Folder Structure
+
 ```
 
-2. Create a virtual environment and install dependencies
+AI\_AutoPilot\_Agent/
+├── app/
+│   ├── agents/               # Coordinator, Diagnostic, Automation, Writer
+│   ├── api/                  # FastAPI route handlers
+│   ├── services/             # LLM and agent routing logic
+│   └── main.py               # App entry point
+│
+├── tests/                    # Pytest-based test suite
+│   ├── test\_happy\_path.py
+│   ├── test\_approval\_flow\.py
+│   ├── test\_get\_status.py
+│   ├── test\_script\_compiles.py
+│   └── test\_agent\_retry.py
+│
+├── requirements.txt
+└── README.md
 
-```bash
-python -m venv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
-```
+````
 
-3. Set your environment variables
+---
 
-```bash
-set OPENAI_API_KEY=your_openai_key
-```
-
-4. Run the app
+## 🧪 Run the App
 
 ```bash
 uvicorn app.main:app --reload
-```
+````
 
-Visit: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) for Swagger UI.
+Once started, open:
+
+* Swagger UI → [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* ReDoc → [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
 
 ---
 
-## 🔧 API Endpoints
+## 📝 Example Swagger Requests
 
-### POST `/task`
-
-Submit a new task.
+### ✅ Happy Path (Auto-execution)
 
 ```json
+POST /api/v1/execute
 {
-  "request": "Diagnose why server xyz is slow and generate remediation steps",
+  "request": "Diagnose why Windows Server 2019 VM cpu01 hits 95%+ CPU, generate a PowerShell script to collect perfmon logs, and draft an email to management summarizing findings.",
+  "require_approval": false
+}
+```
+
+### 🔐 Approval Path
+
+```json
+POST /api/v1/execute
+{
+  "request": "Diagnose root cause of network latency for Linux VM `net-app-01`, suggest fixes, and generate Bash script to flush firewall and renew DHCP.",
   "require_approval": true
 }
 ```
 
-### GET `/status/{task_id}`
+Then approve:
 
-Get the current status and result of a submitted task.
+```http
+POST /api/v1/plans/{task_id}/approve
+```
 
 ---
 
-## ✅ Testing
+## 🧪 Testing the System
+
+Run the full test suite:
 
 ```bash
 pytest tests/
 ```
 
-Tests cover approval flow, retries, script generation, and task lifecycle.
+### Test Breakdown
+
+| Test File                 | Purpose                                              |
+| ------------------------- | ---------------------------------------------------- |
+| `test_happy_path.py`      | Full flow with no approval needed                    |
+| `test_approval_flow.py`   | Test approve & reject endpoints                      |
+| `test_get_status.py`      | Confirm status polling reflects real-time state      |
+| `test_script_compiles.py` | Validate generated PowerShell/Bash scripts are valid |
+| `test_agent_retry.py`     | Simulates AutomationAgent failure and verifies retry |
 
 ---
 
-## 🚜 Technologies Used
+## 🔁 Retry Logic
 
-* FastAPI
-* LangGraph
-* DSPy/MCP
-* OpenAI API
-* Python 3.12+
-* SQLite/Postgres
-* Uvicorn
+If any agent (e.g., `AutomationAgent`) throws a transient error, retry logic kicks in automatically. This ensures:
+
+* No manual restarts needed
+* Task execution continues when transient errors (e.g., API hiccups) resolve
+* Observability via logs and test coverage
 
 ---
 
-## 🚀 Future Enhancements
+## 🛠 Tech Stack
 
-* Add user authentication and rate limiting
-* Improve UI/UX with a React frontend
-* Integrate with Microsoft Teams for notifications
+* **LLM**: OpenAI GPT-4 (via Python SDK)
+* **Framework**: FastAPI + Uvicorn
+* **Orchestration**: LangGraph + DSPy/MCP
+* **Testing**: Pytest
+* **Persistence**: In-memory dict or file-based storage (can plug in DB)
 
 ---
 
-## 🙏 Acknowledgments
+## 🔐 Environment Variables
 
-Thanks to Open Source contributors of LangChain, LangGraph, DSPy, and FastAPI!
+Create a `.env` file:
+
+```
+OPENAI_API_KEY=your_openai_key
+```
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/SyamSundarAkina/AI_AutoPilot_Projects.git
+cd AI_AutoPilot_Projects
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+---
+
+## 📄 License
+
+Licensed under the [MIT License](LICENSE).
+Feel free to use, modify, and build on this project!
+
+```
+
+
