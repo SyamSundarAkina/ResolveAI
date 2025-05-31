@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "fff1f175-16a8-46ad-b70a-73ab20be6e23",
+		"name": "Ai_AutoPilot_Postman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45489631",
+		"_collection_link": "https://syamsundarakina.postman.co/workspace/Syam-Sundar-Akina's-Workspace~0e13dba7-a5db-447a-814d-c4d80c976ef9/collection/45489631-fff1f175-16a8-46ad-b70a-73ab20be6e23?action=share&source=collection_link&creator=45489631"
+	},
+	"item": [
+		{
+			"name": "Example A - No Approval",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"request\": \"Diagnose why Windows Server 2019 VM cpu01 hits 95%+ CPU, generate a PowerShell script to collect perfmon logs, and draft an email to management summarising findings.\",\r\n  \"require_approval\": false\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/execute",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Example B - With Approval",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"request\": \"Diagnose why Windows Server 2019 VM cpu01 hits 95%+ CPU, generate a PowerShell script to collect perfmon logs, and draft an email to management summarising findings.\",\r\n  \"require_approval\": true\r\n}\r\n\r\n\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/execute",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Approve",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/plans/8020d343-3c88-4b38-bb0b-feae0e3de675/approve",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"plans",
+						"8020d343-3c88-4b38-bb0b-feae0e3de675",
+						"approve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/tasks/8020d343-3c88-4b38-bb0b-feae0e3de675",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"8020d343-3c88-4b38-bb0b-feae0e3de675"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
