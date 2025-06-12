@@ -1,5 +1,5 @@
 
-# 🤖 AI Autopilot Agentic System
+# 🤖 ResolveAI Agentic System
 
 A LangGraph + FastAPI-based agentic system that automates IT troubleshooting tasks using multiple specialized agents. It handles request intake, diagnoses issues, executes remediation scripts, and optionally drafts email reports.
 
